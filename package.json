@@ -1,0 +1,33 @@
+{
+  "name": "megaverse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "asynckit": "^0.4.0",
+    "axios": "^1.5.0",
+    "combined-stream": "^1.0.8",
+    "delayed-stream": "^1.0.0",
+    "follow-redirects": "^1.15.2",
+    "form-data": "^4.0.0",
+    "mime-db": "^1.52.0",
+    "mime-types": "^2.1.35",
+    "proxy-from-env": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facundocarballo/crossmint-challenge.git"
+  },
+  "author": "Facundo Carballo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/facundocarballo/crossmint-challenge/issues"
+  },
+  "homepage": "https://github.com/facundocarballo/crossmint-challenge#readme"
+}
