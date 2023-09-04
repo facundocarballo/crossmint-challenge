@@ -11,18 +11,34 @@ export class Astral
     readonly url: string;
     readonly candidateId: string;
     readonly name: AstralType;
+    readonly color: SoloonsColor | undefined;
+    readonly direction: ComethDirection | undefined;
 
-    constructor(url: string, candidateId: string, name: AstralType) 
+    constructor(
+        url: string, 
+        candidateId: string, 
+        name: AstralType, 
+        color?: SoloonsColor, 
+        direction?: ComethDirection
+    ) 
     {
         this.url = url
         this.candidateId = candidateId
         this.name = name;
+        this.color = color;
+        this.direction = direction;
     }
 
     // Methods
     async Post(row:number, column: number) 
     {
-        const params = new Params(this.candidateId, row, column)
+        const params = new Params(
+            this.candidateId, 
+            row,
+            column, 
+            this.color, 
+            this.direction
+        )
          try 
          {
             await axios.post(
