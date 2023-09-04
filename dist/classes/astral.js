@@ -22,16 +22,47 @@ class Astral {
         this.name = name;
     }
     // Methods
-    Post(row, column) {
+    Post(row, column, color, direction) {
         return __awaiter(this, void 0, void 0, function* () {
-            const params = new params_1.Params(this.candidateId, row, column);
+            const params = new params_1.Params(this.candidateId, row, column, color, direction);
             try {
-                yield axios_1.default.post(this.url + this.name, params.GetJSON(), params.GetConfig());
+                yield axios_1.default.post(this.url + this.name, params.GetJSON(), params_1.Params.GetConfig());
             }
             catch (err) {
                 console.log("ERROR: ", err);
             }
         });
+    }
+    static GetAstralType(floor) {
+        if (floor == "POLYANET")
+            return "polyanets";
+        if (floor.includes("SOLOON"))
+            return "soloons";
+        if (floor.includes("COMETH"))
+            return "comeths";
+        return undefined;
+    }
+    static GetAstralColor(floor) {
+        if (floor.includes("BLUE"))
+            return "blue";
+        if (floor.includes("RED"))
+            return "red";
+        if (floor.includes("PURPLE"))
+            return "purple";
+        if (floor.includes("WHITE"))
+            return "white";
+        return undefined;
+    }
+    static GetAstralDirection(floor) {
+        if (floor.includes("RIGHT"))
+            return "right";
+        if (floor.includes("UP"))
+            return "up";
+        if (floor.includes("DOWN"))
+            return "down";
+        if (floor.includes("LEFT"))
+            return "left";
+        return undefined;
     }
 }
 exports.Astral = Astral;

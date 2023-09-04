@@ -16,7 +16,7 @@ class Params {
     GetJSON() {
         return JSON.stringify(this);
     }
-    GetConfig() {
+    static GetConfig() {
         return {
             headers: {
                 "Content-Type": "application/json"

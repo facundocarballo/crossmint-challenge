@@ -35,7 +35,7 @@ export class Params
         return JSON.stringify(this)
     }
 
-    GetConfig():AxiosRequestConfig<string | undefined> {
+    static GetConfig():AxiosRequestConfig<string | undefined> {
         return {
             headers: 
             {
