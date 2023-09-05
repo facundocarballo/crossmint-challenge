@@ -31,11 +31,13 @@ export class Params
         }
     }
 
-    GetJSON():string {
+    GetJSON():string 
+    {
         return JSON.stringify(this)
     }
 
-    static GetConfig():AxiosRequestConfig<string | undefined> {
+    static GetConfig():AxiosRequestConfig<string | undefined> 
+    {
         return {
             headers: 
             {

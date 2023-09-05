@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const astral_1 = require("./classes/astral");
-const crossmint_1 = require("./crossmint");
+const crossmint_1 = require("./src/crossmint");
 const MATRIX_SIZE = 11;
 const MARGIN = 2;
 const main = () => __awaiter(void 0, void 0, void 0, function* () {

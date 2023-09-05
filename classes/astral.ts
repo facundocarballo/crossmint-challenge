@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Params } from './params';
+import { TIMEOUT, TOO_MANY_REQUEST_STATUS_CODE } from '../src/auxs';
 
 export type AstralType = "polyanets" | "comeths" | "soloons";
 export type ComethDirection = "up" | "down" | "right" | "left";
@@ -33,7 +34,7 @@ export class Astral
         column: number, 
         color?: SoloonsColor, 
         direction?: ComethDirection
-    ) 
+    )
     {
         const params = new Params(
             this.candidateId, 
@@ -42,17 +43,30 @@ export class Astral
             color, 
             direction
         )
-         try 
-         {
-            await axios.post(
-                this.url + this.name, 
-                params.GetJSON(), 
-                Params.GetConfig()
-            )
-        } catch (err) 
+        let haveToRequest = true;
+        while(haveToRequest) 
         {
-            console.log("ERROR: ", err)
+            try 
+            {
+                await axios.post(
+                    this.url + this.name, 
+                    params.GetJSON(),
+                    Params.GetConfig()
+                );
+                haveToRequest = false;
+            } catch (err: any) 
+            {
+                if (
+                    err.response && 
+                    err.response.status === TOO_MANY_REQUEST_STATUS_CODE
+                )
+                    await new Promise(resolve => setTimeout(resolve, TIMEOUT));
+                else
+                    haveToRequest = false;
+            }
+                    
         }
+
     }
 
     static GetAstralType(floor: Floor): AstralType | undefined

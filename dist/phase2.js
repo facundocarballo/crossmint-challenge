@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const crossmint_1 = require("./crossmint");
+const crossmint_1 = require("./src/crossmint");
 const params_1 = require("./classes/params");
 const astral_1 = require("./classes/astral");
 const GOAL = "goal";
@@ -26,30 +26,22 @@ let column = 0;
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield axios_1.default.get(crossmint_1.URL + "map/" + crossmint_1.CANDIDATE_ID + "/goal", params_1.Params.GetConfig());
     const map = res.data[GOAL];
-    const handlePostRequest = () => __awaiter(void 0, void 0, void 0, function* () {
-        switch (astral_1.Astral.GetAstralType(map[row][column])) {
-            case "comeths":
-                yield cometh.Post(row, column, undefined, astral_1.Astral.GetAstralDirection(map[row][column]));
-                break;
-            case "polyanets":
-                yield polyanet.Post(row, column);
-                break;
-            case "soloons":
-                yield soloon.Post(row, column, astral_1.Astral.GetAstralColor(map[row][column]));
-                break;
-            default:
-                break;
-        }
-        column++;
-        if (column >= map[row].length) {
-            column = 0;
-            row++;
-            if (row >= map.length) {
-                clearInterval(interval);
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            switch (astral_1.Astral.GetAstralType(map[i][j])) {
+                case "comeths":
+                    yield cometh.Post(i, j, undefined, astral_1.Astral.GetAstralDirection(map[i][j]));
+                    break;
+                case "polyanets":
+                    yield polyanet.Post(i, j);
+                    break;
+                case "soloons":
+                    yield soloon.Post(i, j, astral_1.Astral.GetAstralColor(map[i][j]));
+                    break;
+                default:
+                    break;
             }
         }
-    });
-    handlePostRequest();
-    const interval = setInterval(handlePostRequest, TIME_OUT);
+    }
 });
 main();

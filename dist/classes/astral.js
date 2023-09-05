@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Astral = void 0;
 const axios_1 = __importDefault(require("axios"));
 const params_1 = require("./params");
+const auxs_1 = require("../src/auxs");
 class Astral {
     constructor(url, candidateId, name) {
         this.url = url;
@@ -25,11 +26,21 @@ class Astral {
     Post(row, column, color, direction) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = new params_1.Params(this.candidateId, row, column, color, direction);
-            try {
-                yield axios_1.default.post(this.url + this.name, params.GetJSON(), params_1.Params.GetConfig());
-            }
-            catch (err) {
-                console.log("ERROR: ", err);
+            let haveToRequest = true;
+            while (haveToRequest) {
+                console.log("Enviando un: ", this.name);
+                try {
+                    yield axios_1.default.post(this.url + this.name, params.GetJSON(), params_1.Params.GetConfig());
+                    haveToRequest = false;
+                }
+                catch (err) {
+                    if (err.response && err.response.status === auxs_1.TOO_MANY_REQUEST_STATUS_CODE) {
+                        console.log("Too many request, esperamos un poco");
+                        yield new Promise(resolve => setTimeout(resolve, auxs_1.TIMEOUT));
+                    }
+                    else
+                        haveToRequest = false;
+                }
             }
         });
     }

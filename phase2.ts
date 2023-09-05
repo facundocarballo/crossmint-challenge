@@ -1,60 +1,48 @@
 import axios from "axios";
-import { CANDIDATE_ID, URL } from "./crossmint";
+import { CANDIDATE_ID, URL } from "./src/crossmint";
 import { Params } from "./classes/params";
 import { Astral, Floor } from "./classes/astral";
 
 const GOAL = "goal";
-const TIME_OUT = 1000;
 
 const polyanet = new Astral(URL, CANDIDATE_ID, "polyanets");
 const soloon = new Astral(URL, CANDIDATE_ID, "soloons");
 const cometh = new Astral(URL, CANDIDATE_ID, "comeths");
 
-let row = 0;
-let column = 0;
-
 const main = async () => 
 {
-    const res = await axios.get(URL + "map/" + CANDIDATE_ID + "/goal", Params.GetConfig());
+    const res = await axios.get(URL + "map/" + CANDIDATE_ID + "/" + GOAL, Params.GetConfig());
     const map: Floor[][] = res.data[GOAL];
 
-    const handlePostRequest = async () => {
-        switch (Astral.GetAstralType(map[row][column])) 
+    for (let i = 0; i < map.length; i++) 
+    {
+        for (let j = 0; j < map[i].length; j++) 
         {
-            case "comeths":
-                await cometh.Post(
-                    row,
-                    column,
-                    undefined,
-                    Astral.GetAstralDirection(map[row][column])
-                );
-                break;
-            case "polyanets":
-                await polyanet.Post(row, column);
-                break;
-            case "soloons":
-                await soloon.Post(
-                    row, 
-                    column, 
-                    Astral.GetAstralColor(map[row][column])
-                );
-                break;
-            default:
-                break;
-        }
-        column++;
-        if (column >= map[row].length) {
-            column = 0;
-            row++;
-            if (row >= map.length) {
-                clearInterval(interval);
+            switch (Astral.GetAstralType(map[i][j])) 
+            {
+                case "comeths":
+                    await cometh.Post(
+                        i,
+                        j,
+                        undefined,
+                        Astral.GetAstralDirection(map[i][j])
+                    );
+                    break;
+                case "polyanets":
+                    await polyanet.Post(i, j);
+                    break;
+                case "soloons":
+                    await soloon.Post(
+                        i, 
+                        j, 
+                        Astral.GetAstralColor(map[i][j])
+                    );
+                    break;
+                default:
+                    break;
             }
         }
     }
-
-    handlePostRequest()
-    
-    const interval = setInterval(handlePostRequest, TIME_OUT)
 };
 
 
